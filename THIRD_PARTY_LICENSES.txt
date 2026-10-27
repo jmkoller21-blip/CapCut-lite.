@@ -1,0 +1,21 @@
+Lite Editor includes the following third-party software.
+
+FFmpeg (ffmpeg.exe, ffprobe.exe)
+  Licence: GNU Lesser General Public License v2.1 or later (LGPL build, no GPL components).
+  Project: https://ffmpeg.org/   Source: https://ffmpeg.org/download.html
+  The binaries come from the BtbN FFmpeg-Builds project (https://github.com/BtbN/FFmpeg-Builds),
+  LGPL variant. Their build scripts and the exact source are published there. FFmpeg is run as a
+  separate program and is not linked into Lite Editor. The full licence text ships in
+  ffmpeg\LICENSE.txt next to the program. You may replace these files with your own FFmpeg build.
+
+Inter typeface
+  Licence: SIL Open Font License 1.1. See ui\fonts\Inter-LICENSE.txt.
+
+Tauri and the WebView2 runtime
+  Tauri (MIT or Apache-2.0) provides the window. Microsoft Edge WebView2 is a Microsoft component
+  licensed under its own terms.
+
+Starter media (stock\)
+  Generated for this project and released under CC0 1.0. See stock\LICENSE.txt.
+
+Interface icons were drawn for this project.

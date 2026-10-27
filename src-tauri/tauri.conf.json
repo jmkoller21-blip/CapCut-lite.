@@ -1,0 +1,23 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Lite Editor",
+  "version": "0.1.0",
+  "identifier": "app.liteeditor.desktop",
+  "build": { "frontendDist": "../shell-dist" },
+  "app": { "windows": [], "security": { "csp": null } },
+  "bundle": {
+    "active": true,
+    "targets": ["nsis"],
+    "icon": ["icons/32x32.png", "icons/128x128.png", "icons/icon.ico"],
+    "resources": {
+      "../ui": "ui",
+      "../stock": "stock",
+      "../ffmpeg": "ffmpeg",
+      "../THIRD_PARTY_LICENSES.txt": "THIRD_PARTY_LICENSES.txt"
+    },
+    "windows": {
+      "webviewInstallMode": { "type": "embedBootstrapper" },
+      "nsis": { "installMode": "currentUser", "compression": "lzma" }
+    }
+  }
+}
