@@ -1,0 +1,74 @@
+feature,area,priority,original,clone,notes
+Create a new project with name and aspect ratio,projects,must,yes,no,
+Set project resolution and frame rate,projects,must,yes,no,
+Recent projects list on a home screen,projects,must,yes,no,
+Save and reopen projects (autosave),projects,must,yes,no,
+Relink missing media on reopen,projects,should,yes,no,
+Import video photo and audio files,media,must,yes,no,
+Media panel with thumbnails,media,must,yes,no,
+Drag media onto the timeline,timeline,must,yes,no,
+Multi-track timeline (video audio text),timeline,must,yes,no,
+Zoom and scroll the timeline,timeline,must,yes,no,
+Trim clips with edge handles,timeline,must,yes,no,
+Split at playhead,timeline,must,yes,no,
+Delete left or right of playhead,timeline,must,yes,no,
+Ripple delete to close gaps,timeline,must,yes,no,
+Snapping to clip edges and playhead,timeline,should,yes,no,
+Lock mute and hide tracks,timeline,should,yes,no,
+Add markers,timeline,could,yes,no,
+Audio waveform on clips,timeline,should,yes,no,
+Undo and redo,editing,must,yes,no,
+Keyboard shortcuts (split undo ripple delete),editing,must,yes,no,
+Preview window with play pause and scrub,preview,must,yes,no,
+Move scale and rotate on the canvas,preview,must,yes,no,
+Preview resolution switch for slow PCs,preview,must,no,no,clone-only: lower preview quality to keep playback smooth
+Background proxy media for 1080p and 4K sources,performance,must,no,no,clone-only: key to potato-PC goal
+Software-only playback path (GPU optional),performance,must,no,no,clone-only
+Hardware decode and encode when available,performance,should,yes,no,detect at runtime
+Transform position scale rotation opacity,clip properties,must,yes,no,
+Crop and resize,clip properties,should,yes,no,
+Reverse mirror and rotate clip,clip properties,should,yes,no,
+Freeze frame,clip properties,could,yes,no,
+Constant speed change,speed,must,yes,no,
+Speed curves with presets,speed,could,yes,no,
+Blend modes,clip properties,could,yes,no,
+Masks,clip properties,could,yes,no,
+Keyframes for position scale rotation opacity,animation,should,yes,no,
+Add and style text (font size colour alignment),text,must,yes,no,
+Text presets,text,should,yes,no,
+Manual subtitles track with import of SRT,text,should,yes,no,
+Transitions between clips (cut dissolve slide),transitions,should,yes,no,original has many more
+Basic filters,filters,should,yes,no,original has a large library
+Colour adjustment (basic sliders),colour,must,yes,no,
+HSL and curves,colour,should,yes,no,
+Apply adjustment to all clips,colour,could,yes,no,
+Video effects (blur glitch etc.),effects,could,yes,no,original has a large library
+Stickers and overlays,effects,could,yes,no,use own openly licensed set
+Volume control per clip,audio,must,yes,no,
+Fade in and fade out,audio,must,yes,no,
+Loudness normalisation,audio,should,yes,no,
+Audio extraction from video,audio,should,yes,no,
+Noise reduction (non-AI filter),audio,could,yes,no,
+Voiceover recording,audio,should,yes,no,
+Export to MP4 (H.264),export,must,yes,no,
+Export resolution up to 1080p,export,must,yes,no,
+Export resolution up to 4K,export,could,yes,no,hardware dependent
+Export frame rate choice (24 30 60),export,must,yes,no,
+Export bitrate and codec options,export,should,yes,no,
+Export MOV,export,could,yes,no,
+Export audio only (MP3 WAV),export,could,yes,no,
+Export progress cancel and error handling,export,must,yes,no,
+Windows installer and uninstaller,distribution,must,no,no,clone-only goal
+Auto-update,distribution,could,yes,no,
+Offline use with no account,distribution,must,yes,no,
+Stock footage and music library,content,could,yes,skip,licensed content
+Template gallery,content,could,yes,skip,licensed content and cloud
+AI auto captions,ai,could,yes,skip,heavy models; conflicts with low-spec goal
+AI background removal,ai,could,yes,skip,heavy models
+AI text-to-speech and translation,ai,could,yes,skip,server-side and heavy
+AI image and video generation,ai,could,yes,skip,server-side
+Motion tracking and auto reframe,ai,could,yes,skip,heavy; revisit later
+Cloud storage and team collaboration,cloud,could,yes,skip,not rebuildable as a local app
+Share to TikTok and YouTube,sharing,could,yes,skip,depends on platform services
+Copyright check on export,sharing,could,yes,skip,depends on a third-party service
+Account sign-in and Pro subscription,accounts,could,yes,skip,no accounts in the clone

@@ -31,22 +31,13 @@ pub struct Media {
     pub has_audio: bool,
 }
 
-/// Numeric look parameters. The UI resolves named filters and their strength into these,
-/// so preview (CSS) and export (FFmpeg) are driven by the same numbers.
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Default)]
 pub struct Adjust {
-    pub brightness: f64, // -1..1, 0 = unchanged
+    pub brightness: f64, // -1..1
     pub contrast: f64,   // 0..2, 1 = unchanged
-    pub saturation: f64, // 0..3, 1 = unchanged
-    pub hue: f64,        // degrees
-    pub warmth: f64,     // -1..1 (cool..warm)
-    pub blur: f64,       // pixels at project resolution
-}
-
-impl Default for Adjust {
-    fn default() -> Self {
-        Adjust { brightness: 0.0, contrast: 1.0, saturation: 1.0, hue: 0.0, warmth: 0.0, blur: 0.0 }
-    }
+    pub saturation: f64, // 0..2, 1 = unchanged
+    pub filter: String,  // "", mono, warm, cool, vivid, fade, vintage
+    pub strength: f64,   // 0..1
 }
 
 impl Adjust {
@@ -54,9 +45,7 @@ impl Adjust {
         self.brightness.abs() < 0.001
             && (self.contrast - 1.0).abs() < 0.001
             && (self.saturation - 1.0).abs() < 0.001
-            && self.hue.abs() < 0.01
-            && self.warmth.abs() < 0.001
-            && self.blur < 0.01
+            && (self.filter.is_empty() || self.strength <= 0.001)
     }
 }
 
@@ -166,14 +155,13 @@ impl Project {
             for c in t.get("clips").map(|c| c.as_arr()).unwrap_or(&[]) {
                 let adj = match c.get("adj") {
                     Some(a) => Adjust {
-                        brightness: a.f64_or("brightness", 0.0).clamp(-1.0, 1.0),
-                        contrast: a.f64_or("contrast", 1.0).clamp(0.0, 3.0),
-                        saturation: a.f64_or("saturation", 1.0).clamp(0.0, 3.0),
-                        hue: a.f64_or("hue", 0.0).clamp(-180.0, 180.0),
-                        warmth: a.f64_or("warmth", 0.0).clamp(-1.0, 1.0),
-                        blur: a.f64_or("blur", 0.0).clamp(0.0, 60.0),
+                        brightness: a.f64_or("brightness", 0.0),
+                        contrast: a.f64_or("contrast", 1.0),
+                        saturation: a.f64_or("saturation", 1.0),
+                        filter: a.str_or("filter", ""),
+                        strength: a.f64_or("strength", 1.0),
                     },
-                    None => Adjust::default(),
+                    None => Adjust { contrast: 1.0, saturation: 1.0, strength: 1.0, ..Default::default() },
                 };
                 let text = c.get("text").map(|x| TextSpec {
                     content: x.str_or("content", ""),

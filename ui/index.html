@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lite Editor</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <section id="home" class="view"></section>
+  <section id="editor" class="view" hidden>
+    <header id="toolbar">
+      <button class="btn ghost" id="btn-home" title="Back to projects"></button>
+      <input id="proj-name" class="name-input" aria-label="Project name" maxlength="80">
+      <span id="save-state" class="muted small" role="status"></span>
+      <span class="grow"></span>
+      <button class="btn icon" id="btn-undo" title="Undo (Ctrl+Z)" aria-label="Undo"></button>
+      <button class="btn icon" id="btn-redo" title="Redo (Ctrl+Y)" aria-label="Redo"></button>
+      <button class="btn icon" id="btn-keys" title="Keyboard shortcuts (?)" aria-label="Keyboard shortcuts"></button>
+      <button class="btn primary lg" id="btn-export"></button>
+    </header>
+    <main id="work">
+      <aside id="left">
+        <nav id="left-tabs" role="tablist" aria-label="Tools"></nav>
+        <div id="left-body"></div>
+      </aside>
+      <section id="center">
+        <div id="stagewrap"><div id="stage" aria-label="Preview"></div><div id="stage-hint" class="muted"></div></div>
+        <div id="transport"></div>
+      </section>
+      <aside id="right"><div id="props"></div></aside>
+    </main>
+    <section id="timeline">
+      <div id="tl-toolbar"></div>
+      <div id="tl-body">
+        <div id="tl-heads"></div>
+        <div id="tl-scroll"><div id="tl-spacer"></div><canvas id="tl-canvas"></canvas></div>
+      </div>
+    </section>
+  </section>
+</div>
+<div id="modal-root"></div>
+<div id="toasts" role="status" aria-live="polite"></div>
+<script type="module" src="main.js"></script>
+</body>
+</html>

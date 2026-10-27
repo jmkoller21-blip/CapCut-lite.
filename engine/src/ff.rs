@@ -14,11 +14,6 @@ pub struct Ff {
 
 #[derive(Clone, Debug)]
 pub struct MediaInfo {
-    pub vcodec: String,
-    pub acodec: String,
-    pub container: String,
-    pub pix_fmt: String,
-    pub rotated: bool,
     pub kind: MediaKind,
     pub dur: i64,
     pub w: u32,
@@ -99,7 +94,7 @@ impl Ff {
             .args([
                 "-v", "error",
                 "-show_entries",
-                "stream=codec_name,codec_type,width,height,r_frame_rate,avg_frame_rate,duration,pix_fmt:stream_tags=rotate:stream_side_data=rotation:format=duration,format_name",
+                "stream=codec_type,width,height,r_frame_rate,avg_frame_rate,duration:stream_tags=rotate:stream_side_data=rotation:format=duration",
                 "-of", "json",
             ])
             .arg(path)
@@ -113,19 +108,11 @@ impl Ff {
         let mut has_audio = false;
         let (mut w, mut h, mut fps, mut sdur) = (0u32, 0u32, 0.0f64, 0.0f64);
         let mut has_video = false;
-        let (mut vcodec, mut acodec, mut pix_fmt, mut rotated) = (String::new(), String::new(), String::new(), false);
         for s in j.get("streams").map(|s| s.as_arr()).unwrap_or(&[]) {
             match s.str_or("codec_type", "").as_str() {
-                "audio" => {
-                    if !has_audio {
-                        acodec = s.str_or("codec_name", "");
-                    }
-                    has_audio = true
-                }
+                "audio" => has_audio = true,
                 "video" if !has_video => {
                     has_video = true;
-                    vcodec = s.str_or("codec_name", "");
-                    pix_fmt = s.str_or("pix_fmt", "");
                     w = s.i64_or("width", 0).max(0) as u32;
                     h = s.i64_or("height", 0).max(0) as u32;
                     fps = parse_rate(&s.str_or("avg_frame_rate", "0/0"))
@@ -136,7 +123,6 @@ impl Ff {
                     for sd in s.get("side_data_list").map(|x| x.as_arr()).unwrap_or(&[]) {
                         rot = sd.f64_or("rotation", rot);
                     }
-                    rotated = (rot.abs() as i64) % 360 != 0;
                     if (rot.abs() as i64 / 90) % 2 == 1 {
                         std::mem::swap(&mut w, &mut h);
                     }
@@ -145,18 +131,17 @@ impl Ff {
             }
         }
         let fdur: f64 = j.get("format").map(|f| f.str_or("duration", "0")).unwrap_or_default().parse().unwrap_or(0.0);
-        let container = j.get("format").map(|f| f.str_or("format_name", "")).unwrap_or_default();
         let secs = if fdur > 0.0 { fdur } else { sdur };
         if !has_video && !has_audio {
             return Err("no audio or video found in this file".into());
         }
         if has_video && Self::is_image_path(path) {
-            return Ok(MediaInfo { vcodec, acodec, container, pix_fmt, rotated, kind: MediaKind::Image, dur: 5 * US, w, h, fps: 30.0, has_audio: false });
+            return Ok(MediaInfo { kind: MediaKind::Image, dur: 5 * US, w, h, fps: 30.0, has_audio: false });
         }
         if !has_video {
-            return Ok(MediaInfo { vcodec, acodec, container, pix_fmt, rotated, kind: MediaKind::Audio, dur: (secs * US as f64) as i64, w: 0, h: 0, fps: 0.0, has_audio: true });
+            return Ok(MediaInfo { kind: MediaKind::Audio, dur: (secs * US as f64) as i64, w: 0, h: 0, fps: 0.0, has_audio: true });
         }
-        Ok(MediaInfo { vcodec, acodec, container, pix_fmt, rotated, kind: MediaKind::Video, dur: (secs * US as f64) as i64, w, h, fps, has_audio })
+        Ok(MediaInfo { kind: MediaKind::Video, dur: (secs * US as f64) as i64, w, h, fps, has_audio })
     }
 
     pub fn encoder_names(&self) -> Vec<String> {
@@ -182,7 +167,7 @@ impl Ff {
             return v.clone();
         }
         let have = self.encoder_names();
-        let order = ["libx264", "h264_nvenc", "h264_qsv", "h264_amf", "h264_mf", "libopenh264", "mpeg4", "libvpx"];
+        let order = ["libx264", "h264_nvenc", "h264_qsv", "h264_amf", "h264_mf", "libopenh264", "mpeg4"];
         let mut ok = Vec::new();
         for name in order {
             if !have.iter().any(|h| h == name) {
