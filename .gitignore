@@ -1,5 +1,4 @@
 target/
 node_modules/
 dist/
-*.proj-journal
-.DS_Store
+*.log
