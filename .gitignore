@@ -1,6 +1,5 @@
-target/
 node_modules/
+target/
 dist/
 *.proj
-ffmpeg/
-src-tauri/gen/
+.DS_Store
