@@ -12,7 +12,7 @@ Newest at the bottom. One line per step, big or small. Update and push after eve
 - 2026-10-28/30: wrote the missing UI modules (`main.js`, `ui.js`, `library.js`, `props.js`, `panels.js`): home screen, new-project dialog, transport, shortcuts, settings, media/stock/text/transitions/filters/audio panels, properties panel, export dialog, SRT import, voiceover recording.
 
 ## In progress
-- Smoke-testing the new UI in headless Chromium against the real engine (import, add to timeline, split, text, transition, export, ffprobe the output).
+- Looking at the smoke-test screenshots for visual problems, then push and build the installer.
 
 ## Next
 1. Fix whatever the smoke test finds. Commit and push.
@@ -21,4 +21,5 @@ Newest at the bottom. One line per step, big or small. Update and push after eve
 4. Open items: code signing, H.264 licensing review before any public release, app name and audience decision, per-clip waveforms and keyframes are not built yet.
 
 ## Log
+- 2026-10-30: added `tools/smoke-ui.js` (headless Chromium end-to-end test). Found and fixed one bug (media tab rendered before a project was open). Full flow passes: import, timeline, split, undo/redo, text, transition, filter, stock, playback, export (1280x720 H.264+AAC, 6 s, frames not black), reopen.
 - 2026-10-30: added `CLAUDE.md` and this file so a new session can resume from the repo alone.

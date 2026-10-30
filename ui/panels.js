@@ -78,6 +78,7 @@ export function renderPanel() {
   if (!el) return;
   el.replaceChildren();
   el.setAttribute('role', 'tabpanel');
+  if (!S.doc) return; // no project open yet
   if (tab === 'media') mediaTab(el);
   else if (tab === 'stock') stockTab(el);
   else if (tab === 'text') textTab(el);
