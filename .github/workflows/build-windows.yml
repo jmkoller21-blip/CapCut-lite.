@@ -40,11 +40,12 @@ jobs:
             src-tauri
 
       - name: Engine tests
-        shell: pwsh
+        id: tests
+        shell: cmd
         continue-on-error: true
         env:
           LITE_FFMPEG_DIR: ${{ github.workspace }}\ffmpeg
-        run: cargo test --manifest-path engine/Cargo.toml
+        run: cargo test --manifest-path engine/Cargo.toml > test-output.txt 2>&1
 
       - name: Build installer
         shell: pwsh
@@ -53,6 +54,27 @@ jobs:
       - name: Show installer
         shell: pwsh
         run: Get-ChildItem src-tauri\target\release\bundle\nsis | Format-Table Name, Length
+
+      - name: Acceptance test (install, run, export, uninstall)
+        id: smoke
+        shell: pwsh
+        continue-on-error: true
+        timeout-minutes: 12
+        run: ./tools/ci-smoke.ps1
+
+      - name: Write report
+        if: always()
+        shell: pwsh
+        run: |
+          $r = @()
+          $r += "Engine tests on Windows: ${{ steps.tests.outcome }}"
+          if (Test-Path test-output.txt) {
+            $r += (Select-String -Path test-output.txt -Pattern 'test result|FAILED|panicked|failed' | Select-Object -Last 30 | ForEach-Object { $_.Line })
+          }
+          $r += ''
+          if (Test-Path smoke-result.txt) { $r += (Get-Content smoke-result.txt) } else { $r += "No acceptance result was written (smoke step: ${{ steps.smoke.outcome }})." }
+          $r | Out-File -FilePath ci-report.txt -Encoding utf8
+          Get-Content ci-report.txt
 
       - uses: actions/upload-artifact@v4
         with:
@@ -66,4 +88,5 @@ jobs:
           tag_name: build-${{ github.run_number }}
           name: Lite Editor build ${{ github.run_number }}
           prerelease: true
+          body_path: ci-report.txt
           files: src-tauri/target/release/bundle/nsis/*.exe

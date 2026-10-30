@@ -33,7 +33,10 @@ fn main() {
                 font_dir: ui.join("fonts"),
                 ffmpeg_dir: if ffmpeg.is_dir() { Some(ffmpeg) } else { None },
             };
-            let handle = match engine::server::start(paths, 0, None) {
+            // Test hook for CI: a fixed port and token let a script reach the engine. Unset for normal use.
+            let port: u16 = std::env::var("LITE_TEST_PORT").ok().and_then(|p| p.parse().ok()).unwrap_or(0);
+            let token: Option<String> = std::env::var("LITE_TEST_TOKEN").ok().filter(|t| !t.is_empty());
+            let handle = match engine::server::start(paths, port, token) {
                 Ok(h) => h,
                 Err(e) => {
                     log_failure(&data, &e);
