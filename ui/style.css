@@ -57,7 +57,7 @@ label.check { display: inline-flex; align-items: center; gap: var(--sp-3); curso
 #timeline { flex: none; height: var(--l-timeline-min-h); min-height: 150px; max-height: 60vh; display: flex; flex-direction: column; background: var(--c-surface); resize: vertical; overflow: hidden; }
 #tl-toolbar { flex: none; height: 32px; display: flex; align-items: center; gap: var(--sp-2); padding: 0 var(--sp-4); border-bottom: 1px solid var(--c-border); }
 #tl-body { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; display: flex; align-items: flex-start; }
-#tl-heads { flex: none; width: 124px; border-right: 1px solid var(--c-border); padding-top: var(--l-ruler-h); background: var(--c-surface); position: sticky; left: 0; z-index: 2; }
+#tl-heads { flex: none; width: 148px; border-right: 1px solid var(--c-border); padding-top: var(--l-ruler-h); background: var(--c-surface); position: sticky; left: 0; z-index: 2; }
 #tl-scroll { flex: 1; min-width: 0; overflow-x: auto; overflow-y: hidden; position: relative; align-self: stretch; }
 #tl-spacer { position: absolute; left: 0; top: 0; height: 1px; }
 #tl-canvas { display: block; position: sticky; left: 0; top: 0; }

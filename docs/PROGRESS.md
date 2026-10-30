@@ -12,14 +12,15 @@ Newest at the bottom. One line per step, big or small. Update and push after eve
 - 2026-10-28/30: wrote the missing UI modules (`main.js`, `ui.js`, `library.js`, `props.js`, `panels.js`): home screen, new-project dialog, transport, shortcuts, settings, media/stock/text/transitions/filters/audio panels, properties panel, export dialog, SRT import, voiceover recording.
 
 ## In progress
-- Looking at the smoke-test screenshots for visual problems, then push and build the installer.
+- CI build of the fixed UI (watch the newest `build-windows` run; then download and check the installer).
 
 ## Next
-1. Fix whatever the smoke test finds. Commit and push.
-2. Push, let CI build, download the installer, check it (size, PE header, NSIS marker), send it to the user.
+1. (done) smoke test passes.
+2. Let CI build, download the installer, check it (size, PE header, NSIS marker), send it to the user.
 3. Low-spec checks: RAM and start-up time on a throttled run.
 4. Open items: code signing, H.264 licensing review before any public release, app name and audience decision, per-clip waveforms and keyframes are not built yet.
 
 ## Log
+- 2026-10-30: widened timeline track headers (labels were wrapping). Added a CI `concurrency` group so a newer push cancels the older build. Release `build-4` is the broken blank-window build; this session cannot edit releases, so the user should delete it or ignore it.
 - 2026-10-30: added `tools/smoke-ui.js` (headless Chromium end-to-end test). Found and fixed one bug (media tab rendered before a project was open). Full flow passes: import, timeline, split, undo/redo, text, transition, filter, stock, playback, export (1280x720 H.264+AAC, 6 s, frames not black), reopen.
 - 2026-10-30: added `CLAUDE.md` and this file so a new session can resume from the repo alone.
